@@ -1,13 +1,38 @@
-import React , {Fragment} from 'react'
-import gql from 'graphql-tag'
-import {useQuery} from '@apollo/client'
+import React , {Fragment , useState} from 'react'
+import {useQuery , useMutation} from '@apollo/client'
 import Spinner from '../components/Spinner'
-import {Grid , Header} from 'semantic-ui-react'
+import {Grid , Header , Form, Button} from 'semantic-ui-react'
 import PostCard from '../components/PostCard'
+import {FETCH_ALL_POSTS} from '../graphql/index'
+import gql from 'graphql-tag'
 
 const Home = () => {
 
+  const {body , setBody} = useState('')
+
  const {loading , data : {getPosts : posts} = {}} = useQuery(FETCH_ALL_POSTS)
+
+ const [addPost] = useMutation(CREATE_POST , {
+   update(proxy , result) {
+     const data = proxy.readQuery({
+       query : FETCH_ALL_POSTS
+     })
+     data.getPosts = [result.data.getPost , ...data.getPosts]
+     proxy.writeQuery({query : FETCH_ALL_POSTS , data})
+     setBody('')
+   },
+   variables : {
+     $body : body
+   },
+   onError(err) {
+     console.log(err);
+   }
+ })
+
+ const clickHandler = (e) => {
+   e.preventDefault()
+   addPost()
+ }
 
  return (
    <Fragment>
@@ -27,29 +52,53 @@ const Home = () => {
      }
     </Grid.Row>
    </Grid>
+   <div>
+     <Grid centered columns={2}>
+      <Grid.Row>
+       <Grid.Column>
+        <Header as="h2" color="purple">Create Post</Header>
+        <Form>
+        <Form.Field>
+       <label>Body</label>
+       <input placeholder='Body'  onChange={e => setBody(e.target.value)}/>
+     </Form.Field>
+     <Button onClick={clickHandler} color="orange">CreatePost</Button>
+        </Form>
+       </Grid.Column>
+      </Grid.Row>
+     </Grid>
+    </div>
    </Fragment>
   
  )
 }
 
-const FETCH_ALL_POSTS = gql `
-{
- getPosts {
-  _id
+const CREATE_POST = gql `
+
+mutation createPost(
+  $body : String!
+){
+  createPost(
+    body : $body
+  ){
+    _id
+    likescount
+    commentscount
     body
-    likesCount
-    commentsCount
-    likes {
-      id
-    }
+    createdat
     comments {
       id
+      username
       body
-      createdat
+    }
+    likes {
+      id
+      username
     }
   }
 }
 
 `
+
 
 export default Home

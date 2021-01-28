@@ -24,7 +24,7 @@ const MenuExampleBasic  = () => {
   const handleItemClick = (e, { name }) => setactiveItem(name)
 
     return (
-      <Menu size="massive" color="teal">
+      <Menu size="massive" color="olive">
         <Menu.Item
           name='Home'
           active={activeItem === 'Home'}
@@ -51,8 +51,8 @@ const MenuExampleBasic  = () => {
         />
 
 <Menu.Item        
-          name='login'
-          active={activeItem === 'login'}
+          name='logout'
+          active={activeItem === 'logout'}
           onClick={logoutHandler}
         />
           

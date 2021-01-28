@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.3.7",
+    "apollo-link-context": "^1.0.20",
     "apollo-server": "^2.19.2",
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
