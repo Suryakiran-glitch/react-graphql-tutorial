@@ -58,13 +58,11 @@ module.exports = {
    loginValidator(email , password)
    
    const token = jwt.sign({
-    id : res._id
+    id : res._id,
    } , SECRET_KEY , {expiresIn : '2h'})
 
-   if(res) {
-    res.token = token
-    return res
-  }
+   res.token = token
+   return token
   }
  }
 }

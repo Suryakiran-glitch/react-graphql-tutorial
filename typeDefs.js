@@ -9,8 +9,8 @@ type Query {
 }
 
 type Mutation {
- createUser( data : userData) : User!
- loginUser(data : loginData) : User!
+ createUser( data : userData!) : User!
+ loginUser(data : loginData!) : User!
  createPost(body : String!) : String!
  createComment(postId : ID! , body : String!) : Post!
  deleteComment(postId : ID! , commentId : String!) : Post!
@@ -29,7 +29,7 @@ input userData {
 }
 
 input loginData {
- email : String!,
+ email : String!
  password : String!
 }
 
@@ -41,16 +41,16 @@ type Comment {
 }
 
 type Like {
- id : ID!,
- username : String!,
+ id : ID!
+ username : String
  createdat : String!
 }
 
 type Post {
  _id : ID!
- username : String!
+ username : String
  body : String!
- createdate : String!
+ createdat : String!
  comments : [Comment]
  likes : [Like]
  likesCount : Int!
@@ -62,7 +62,7 @@ type User {
  username : String!
  email : String!
  token : String!
- createdate : String!
+ createdat : String!
 }
 
 `

@@ -14,10 +14,10 @@ const userValidator = (username , email , pass , rePass) => {
 
 const loginValidator = (email , password) => {
  if(!email) {
-  throw new Error('Email field must be empty')
+  throw new Error('Email field must not be empty')
  }
  else if(!password) {
-  throw new Error('Password field must be empty')
+  throw new Error('Password field must not be empty')
  }
 }
 
